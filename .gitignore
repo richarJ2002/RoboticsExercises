@@ -1,0 +1,17 @@
+# Git ignore file which ignores changes to files that follow the convention below
+
+# Ignore .VSCodeCounter Extension Outputs
+**.VSCodeCounter
+
+# Ignore .vscode setting files
+**.vscode
+
+# Ignore the virtual python environment
+.venv/
+
+# Ignore Latex artifacts
+*.aux
+*.log
+*.out
+*.gz
+*.toc

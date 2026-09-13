@@ -1,0 +1,611 @@
+\documentclass[10pt,a4paper]{article}
+
+% ---------------------------------------------------------------------------- %
+% PACKAGES
+% ---------------------------------------------------------------------------- %
+
+\usepackage[
+    top=1.8cm,
+    bottom=1.8cm,
+    left=1.7cm,
+    right=1.7cm
+]{geometry}
+
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx} 
+
+\numberwithin{equation}{section}
+
+% ---------------------------------------------------------------------------- %
+% DOCUMENT
+% ---------------------------------------------------------------------------- %
+
+\pagestyle{empty}
+
+% ---------------------------------------------------------------------------- %
+% FONT
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\TextFont}{TeX Gyre Heros}
+\newcommand{\HeaderFont}{TeX Gyre Adventor}
+
+\setmainfont{\TextFont}
+\newfontfamily\HeaderFamily{\HeaderFont}
+
+% ---------------------------------------------------------------------------- %
+% COLOURS
+% ---------------------------------------------------------------------------- %
+
+\definecolor{Black}{HTML}{000000}
+\definecolor{DarkGrey}{HTML}{333333}
+\definecolor{Grey}{HTML}{666666}
+\definecolor{LightGrey}{HTML}{CCCCCC}
+
+% ---------------------------------------------------------------------------- %
+% FONT SIZE
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\TitleSize}{32}
+\newcommand{\SubtitleSize}{16}
+
+\newcommand{\HeaderOneSize}{22}
+\newcommand{\HeaderTwoSize}{16}
+\newcommand{\HeaderThreeSize}{12}
+
+\newcommand{\TextSize}{10}
+
+% ---------------------------------------------------------------------------- %
+% LINE SPACING
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\TitleSpacing}{38}
+\newcommand{\SubtitleSpacing}{20}
+
+\newcommand{\HeaderOneSpacing}{26}
+\newcommand{\HeaderTwoSpacing}{20}
+\newcommand{\HeaderThreeSpacing}{16}
+
+% ---------------------------------------------------------------------------- %
+% SECTION FORMAT
+% ---------------------------------------------------------------------------- %
+
+\titleformat
+    {\section}
+    {\HeaderFamily\fontsize{\HeaderOneSize}{\HeaderOneSpacing}\selectfont\bfseries}
+    {\thesection}
+    {0.75em}
+    {}
+
+\titlespacing*{\section}
+    {0pt}
+    {1.5cm}
+    {0.5cm}
+
+% ---------------------------------------------------------------------------- %
+% SUBSECTION FORMAT
+% ---------------------------------------------------------------------------- %
+
+\titleformat
+    {\subsection}
+    {\HeaderFamily\fontsize{\HeaderTwoSize}{\HeaderTwoSpacing}\selectfont\bfseries}
+    {\thesubsection}
+    {0.75em}
+    {}
+
+\titlespacing*{\subsection}
+    {0pt}
+    {0.8cm}
+    {0.3cm}
+
+% ---------------------------------------------------------------------------- %
+% SUBSUBSECTION FORMAT
+% ---------------------------------------------------------------------------- %
+
+\titleformat
+    {\subsubsection}
+    {\HeaderFamily\fontsize{\HeaderThreeSize}{\HeaderThreeSpacing}\selectfont\bfseries}
+    {\thesubsubsection}
+    {0.75em}
+    {}
+
+\titlespacing*{\subsubsection}
+    {0pt}
+    {0.6cm}
+    {0.2cm}
+
+% ---------------------------------------------------------------------------- %
+% TABLE OF CONTENTS
+% ---------------------------------------------------------------------------- %
+
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecpagefont}{\bfseries}
+
+\setlength{\cftbeforesecskip}{0.4em}
+
+% ---------------------------------------------------------------------------- %
+% HYPERLINKS
+% ---------------------------------------------------------------------------- %
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=Black,
+    urlcolor=Grey,
+    citecolor=Black
+}
+
+% ---------------------------------------------------------------------------- %
+% DOCUMENT INFORMATION
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\DocumentTitle}{Lie Group Algebra: SE(3)}
+\newcommand{\DocumentSubtitle}{Transformation \& Rotations}
+\newcommand{\DocumentAuthor}{Jason Wakim Richards}
+\newcommand{\DocumentDate}{\today}
+
+% ---------------------------------------------------------------------------- %
+% TITLE PAGE
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\TitlePage}{
+    \begin{titlepage}
+
+        \vspace*{3cm}
+
+        {\HeaderFamily
+        \fontsize{\TitleSize}{\TitleSpacing}
+        \selectfont
+        \bfseries
+        \DocumentTitle\par}
+
+        \vspace{0.5cm}
+
+        {\fontsize{\SubtitleSize}{\SubtitleSpacing}
+        \selectfont
+        \DocumentSubtitle\par}
+
+        \vspace{1cm}
+
+        \noindent
+        \textcolor{LightGrey}{\rule{\textwidth}{1pt}}
+
+        \vfill
+
+        {\fontsize{12}{16}\selectfont
+        \DocumentAuthor\par}
+
+        \vspace{0.2cm}
+
+        {\fontsize{10}{14}\selectfont
+        \DocumentDate\par}
+
+    \end{titlepage}
+}
+
+% ---------------------------------------------------------------------------- %
+% SECTION COMMANDS
+% ---------------------------------------------------------------------------- %
+
+\newcommand{\Section}[1]{\section{#1}}
+\newcommand{\Subsection}[1]{\subsection{#1}}
+\newcommand{\Subsubsection}[1]{\subsubsection{#1}}
+\newcommand{\Property}[1]{\par\noindent\textbf{#1}\par}
+
+% ---------------------------------------------------------------------------- %
+% DOCUMENT
+% ---------------------------------------------------------------------------- %
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\TitlePage
+
+\tableofcontents
+
+\newpage
+
+\Section{Introduction}
+
+This document covers the theory behind Lie Groups, Rotations and
+Transformations. This serves as an introductory course to the maths and shows
+examples of workflows and implementation.
+
+\Section{Coordinate Frames}
+
+Suppose we have 2 coordinate frames, frame A and frame B. Let's say we can
+describe the rotation from frame $A$ to frame $B$ through a rotation matrix,
+${}^B\mathbf{R}_A \in \mathbb{R}^{3\times3}$ and a translation vector
+$^B\mathbf{t}_A \in \mathbb{R}^3$. And let's say we have a point in space
+described in frame $A$, ${}^A\mathbf{p}$. We can then transalte the point into frame $B$,
+${}^B\mathbf{p}$, via:
+
+\begin{equation}
+    {}^B\mathbf{p}
+    =
+    {}^B\mathbf{R}_A {}^A\mathbf{p}
+    +
+    {}^B\mathbf{t}_A
+    \label{eq:point-transformation}
+\end{equation}
+
+First thing to notice is that a rigid body transformation is both a rotation and
+a translation. The definition of the variables in \ref{eq:point-transformation}
+are as follows:
+
+\vspace{0.5cm}
+
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{@{}ll}
+    \hspace{5cm}${}^B\mathbf{p}$   & \hspace{0.1cm} : \hspace{0.1cm} Point expressed in frame $B$.                                            \\
+    \hspace{5cm}${}^B\mathbf{R}_A$ & \hspace{0.1cm} : \hspace{0.1cm} Rotation matrix from frame $A$ to frame $B$.                             \\
+    \hspace{5cm}${}^A\mathbf{p}$   & \hspace{0.1cm} : \hspace{0.1cm} Point expressed in frame $A$.                                            \\
+    \hspace{5cm}${}^B\mathbf{t}_A$ & \hspace{0.1cm} : \hspace{0.1cm} Translation from frame $A$ to frame $B$ \textbf{expressed} in frame $B$.
+\end{tabular}
+
+\vspace{0.5cm}
+
+It is important to get a clear understanding of what the variables mean and what
+frames they are in. Figure \ref{fig:coordinate-frames} shows a diagram of the
+different vectors.
+
+\vspace{0.3cm}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/png/robotics-exercises-lie-group-algebra.png}
+    \caption{Figure showing the transformation of points between two coordinate frames $A$ and $B$.}
+    \label{fig:coordinate-frames}
+\end{figure}
+
+\Section{SO(3): Rotation}
+
+A 3D point can be expressed by a $3\times3$ rotation matrix:
+
+\vspace{0.3cm}
+\begin{equation}
+    \mathbf{R} = \begin{bmatrix}
+        r_{11} & r_{12} & r_{13} \\
+        r_{21} & r_{22} & r_{23} \\
+        r_{31} & r_{32} & r_{33} \\
+    \end{bmatrix}
+    \label{eq:rotation-matrix}
+\end{equation}
+\vspace{0.3cm}
+
+A valid rotation matrix must satisfy the following constraints:
+
+\vspace{0.3cm}
+\begin{equation}
+    \mathbf{R}\mathbf{R}^T = \mathbf{R}^T\mathbf{R} = \mathbb{I}_{3\times3}
+    \label{eq:rotation-matrix-transpose-constraint}
+\end{equation}
+\vspace{0.3cm}
+\begin{equation}
+    \det(\mathbf{R}) = 1
+    \label{eq:rotation-matrix-determinant-constraint}
+\end{equation}
+\vspace{0.3cm}
+
+All matricies which satisfy the constraints
+\ref{eq:rotation-matrix-transpose-constraint} and
+\ref{eq:rotation-matrix-determinant-constraint} are denoted as
+\textbf{Special Orthogonal} (\(SO\)) matricies. With \(SO\)(3) denoting a 3
+dimensional rotational space. This can be written as:
+
+\begin{equation}
+    SO(3) =
+    \left\{
+    \mathbf{R} \in \mathbb{R}^{3\times3}
+    :
+    \hspace{0.2cm}
+    \mathbf{R}\mathbf{R}^T = \mathbb{I}_{3\times3},
+    \hspace{0.2cm}
+    \det(\mathbf{R}) = 1
+    \right\}
+    \label{eq:so3-definition}
+\end{equation}
+
+\Subsection{Why is SO(3) a group?}
+
+The special orthogonal group $SO(3)$ is a group because the composition of
+rotation matrices satisfies the four group properties: closure, identity,
+inverse, and associativity.
+
+\vspace{1cm}
+
+\Property{Composition}
+
+The composition of two rotation matrices produces another valid rotation
+matrix. Therefore, for $\mathbf{R}_1,\mathbf{R}_2 \in SO(3)$:
+
+\begin{equation}
+    \mathbf{R}_3
+    =
+    \mathbf{R}_2\mathbf{R}_1
+    \in SO(3)
+\end{equation}
+
+\Property{Identity}
+
+There exists an identity rotation that leaves every vector unchanged. This is
+represented by the identity matrix $\mathbb{I}_{3\times3}$:
+
+\begin{equation}
+    \mathbf{R}\mathbf{I}
+    =
+    \mathbf{I}\mathbf{R}
+    =
+    \mathbf{R}
+\end{equation}
+
+\Property{Inverse}
+
+Every rotation can be undone by applying its inverse. For rotation matrices,
+the inverse is equal to the transpose:
+
+\begin{equation}
+    \mathbf{R}^{-1}
+    =
+    \mathbf{R}^{T}
+\end{equation}
+
+\Property{Associativity}
+
+The grouping of multiple rotations does not affect the resulting rotation:
+
+\begin{equation}
+    \left(\mathbf{R}_1\mathbf{R}_2\right)\mathbf{R}_3
+    =
+    \mathbf{R}_1\left(\mathbf{R}_2\mathbf{R}_3\right)
+\end{equation}
+
+\vspace{1cm}
+
+Therefore, $SO(3)$ forms a group. The important additional property is that
+$SO(3)$ is also a smooth mathematical manifold. This is what makes $SO(3)$ a
+Lie group. A general $3\times3$ matrix has 9 independent elements. However, a rotation
+matrix is constrained by the orthogonality and determinant conditions defined
+above. These constraints reduce the number of independent degrees of freedom
+to 3. This structure allows rotations to be represented locally using a
+corresponding Lie algebra.
+
+\Subsubsection{Axis-Angle Representation}
+
+Every 3D rotationn can be described with:
+\begin{description}
+    \item \hspace{2cm}- An axis of rotation $\vec{u}$ where, $\vec{u} = 1$.
+    \item \hspace{2cm}- An angle of rotation $\theta$, measured in radians.
+\end{description}
+
+\vspace{0.5cm}
+
+We can combine these into a single vector called the rotation vector
+$\vec{\phi}$:
+
+\begin{equation}
+    \vec{\phi} = \theta \vec{u}
+    \label{eq:rotation-vector-definition}
+\end{equation}
+
+which has the properties:
+\begin{description}
+    \item \hspace{2cm}- $|\vec{\phi}| = \theta$
+    \item \hspace{2cm}- $\frac{\vec{\phi}}{\theta} = \vec{u}$
+\end{description}
+
+\vspace{0.3cm}
+
+Hence, a 3D rotation can be described by a 3D vector.
+
+\Subsubsection{The Hat Operator}
+
+Given:
+
+\begin{equation}
+    \vec{\phi} = \begin{bmatrix}
+        \phi_x \\
+        \phi_y \\
+        \phi_z
+    \end{bmatrix}
+\end{equation}
+
+we can define:
+
+\begin{equation}
+    \text{\textasciicircum} : \mathbb{R}^3 \rightarrow \mathcal{SO}(3)
+\end{equation}
+
+as:
+
+\begin{equation}
+    \vec{\phi}\text{\textasciicircum} = \begin{bmatrix}
+        0       & -\phi_z & \phi_y  \\
+        -\phi_z & 0       & -\phi_x \\
+        -\phi_y & \phi_x  & 0       \\
+    \end{bmatrix}
+\end{equation}
+
+This matrix has the important property:
+
+\vspace{0.1cm}
+\begin{equation}
+    \vec{\phi}\text{\textasciicircum}\vec{x} = \vec{\phi} \times \vec{x}
+\end{equation}
+\vspace{0.1cm}
+
+The set of all matricies of the form $\vec{\phi}\text{\textasciicircum}$ is
+called $\mathcal{SO}(3)$.
+
+\vspace{0.1cm}
+\begin{description}
+    \item \hspace{2cm}$\text{SO(3)}$ \hspace{0.1cm} : \hspace{0.1cm} Contains actual rotation
+    \item \hspace{2cm}$\mathcal{SO}\text{(3)}$ \hspace{0.1cm} : \hspace{0.1cm} Contains infitesmal rotations / rotation
+          vector represented as matricies.
+\end{description}
+\vspace{0.3cm}
+
+The exponential and logarithmic map connect the two together.
+
+\Subsection{The Exponential Map}
+
+Suppose we have a rotation vector, $\vec{\phi}$. We can use the exponential
+map to transform it into a rotation matrix:
+
+\begin{equation}
+    \mathbf{R} = \exp\left(\vec{\phi}\text{\textasciicircum}\right)
+\end{equation}
+
+This is the Lie group exponential map:
+
+\begin{equation}
+    \exp : \mathcal{SO}(3) \rightarrow SO(3)
+\end{equation}
+
+The exponential map can be defined using the matrix exponential:
+
+\begin{equation}
+    \exp\left(\vec{\phi}\text{\textasciicircum}\right)
+    =
+    \mathbf{I}_{3\times3}
+    +
+    \vec{\phi}\text{\textasciicircum}
+    +
+    \frac{1}{2!}
+    \left(\vec{\phi}\text{\textasciicircum}\right)^2
+    +
+    \frac{1}{3!}
+    \left(\vec{\phi}\text{\textasciicircum}\right)^3
+    + \cdots
+\end{equation}
+
+This infinite series has a closed-form solution called the
+Rodrigues rotation formula.
+
+\begin{equation}
+    \theta = \left\|\vec{\phi}\right\|
+\end{equation}
+
+\begin{equation}
+    \mathbf{R} =
+    \mathbb{I}_{3\times3}
+    +
+    \frac{\sin\theta}{\theta}
+    \vec{\phi}\text{\textasciicircum}
+    +
+    \frac{1-\cos\theta}{\theta^2}
+    \left(\vec{\phi}\text{\textasciicircum}\right)^2
+\end{equation}
+
+This converts:
+
+\begin{equation}
+    \vec{\phi} \rightarrow \vec{\phi}\text{\textasciicircum} \rightarrow \mathbf{R}
+\end{equation}
+
+\Subsection{The Logarithmic Map}
+
+We can go the other way as well. Suppose we have a rotation matrix,
+$\mathbf{R}$. We can use the logarithmic map to transform it into a rotation
+vector:
+
+\begin{equation}
+    \vec{\phi} = \log\left(\mathbf{R}\right)
+\end{equation}
+
+This is the Lie group logarithmic map:
+
+\begin{equation}
+    \log : \text{SO}(3) \rightarrow \mathcal{SO}(3)
+\end{equation}
+
+The logarithmic map can be defined using the following:
+
+\begin{align}
+    \theta = \cos^{-1}\left(\frac{\operatorname{tr}(\mathbf{R})-1}{2}\right) \\
+    \vec{\phi} = \frac{\theta}{2\sin{\theta}}\left(\mathbf{R} - \mathbf{R}^T\right)
+\end{align}
+
+\Section{SE(3): Translation}
+
+Now we can add translation:
+
+\begin{equation}
+    \mathbf{T} = \begin{bmatrix}
+        \mathbf{R} & \vec{t} \\
+        0          & 1
+    \end{bmatrix}
+\end{equation}
+
+Where:
+\begin{align}
+    \mathbf{R} & \in \mathbb{R}^{3\times3} \\
+    \vec{t}    & \in \mathbb{R}^3
+\end{align}
+
+The set of all transformation is $\text{SE}(3)$. Formally it is:
+
+\begin{equation}
+    \text{SE}(3) = \left\{\begin{bmatrix}\mathbf{R} & \vec{t} \\ 0 & 1 \end{bmatrix} : \mathbf{R} \in \text{SO}(3), \vec{t} \in \mathbb{R}^3\right\}
+\end{equation}
+
+This is the group of 3D rigid-body transformations.
+
+\Subsection{Homogeneous Coordinates}
+
+Normally:
+
+\begin{equation}
+    {}^B\vec{p} = {}^B\mathbf{R}_A{}^A\vec{p} + {}^B\vec{t}_A
+\end{equation}
+
+The rotation and transaltion are seperate. Using homogeneous coordinates:
+
+\begin{equation}
+    \tilde{p} = \begin{bmatrix}
+        \vec{p} \\
+        1
+    \end{bmatrix}
+\end{equation}
+
+Then we can write:
+
+\begin{equation}
+    {}^B\tilde{p} = {}^B\mathbf{T}_A {}^A\tilde{p}
+\end{equation}
+
+This then allows:
+
+\begin{equation}
+    {}^C\mathbf{T}_A = {}^C\mathbf{T}_B {}^B\mathbf{T}_A
+\end{equation}
+
+\Subsection{SE(3) Inverse}
+
+If:
+
+\begin{equation}
+    {}^B\mathbf{T}_A = \begin{bmatrix}
+        {}^B\mathbf{R}_A & {}^B\vec{t}_A \\
+        0                & 1
+    \end{bmatrix}
+\end{equation}
+
+Then the inverse is:
+
+\begin{equation}
+    {}^B\mathbf{T}_A^{-1} = \begin{bmatrix}
+        {}^B\mathbf{R}_A{}^T & -{}^B\mathbf{R}_A{}^T{}^B\vec{t}_A \\
+        0                    & 1
+    \end{bmatrix}
+\end{equation}
+
+Notice that the translation is not simply $-{}^B\vec{t}_A$. It must first be
+rotated.
+
+\end{document}
