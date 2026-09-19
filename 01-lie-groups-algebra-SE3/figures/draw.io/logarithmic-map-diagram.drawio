@@ -1,0 +1,65 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="qdiQGF83X9zTTMQaH_f1">
+    <mxGraphModel dx="1657" dy="938" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-23" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="3mwNcthjt3u4vVBbUtMw-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="60" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-24" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="3mwNcthjt3u4vVBbUtMw-15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="\(T\)" vertex="1">
+          <mxGeometry height="40" width="40" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-25" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="3mwNcthjt3u4vVBbUtMw-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Extract \(R\)" vertex="1">
+          <mxGeometry height="40" width="120" x="120" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-26" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="3mwNcthjt3u4vVBbUtMw-17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-30" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="3mwNcthjt3u4vVBbUtMw-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Find: \(\vec{\phi} = \log(R)\)" vertex="1">
+          <mxGeometry height="40" width="120" x="280" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-28" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="3mwNcthjt3u4vVBbUtMw-19" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Find: \(\theta = |\vec{\phi}|\)" vertex="1">
+          <mxGeometry height="40" width="120" x="280" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-29" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="3mwNcthjt3u4vVBbUtMw-21" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Find: \(V\)" vertex="1">
+          <mxGeometry height="40" width="120" x="440" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-27" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="3mwNcthjt3u4vVBbUtMw-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Extract: \(\vec{t}\)" vertex="1">
+          <mxGeometry height="40" width="120" x="120" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-31" edge="1" parent="1" source="3mwNcthjt3u4vVBbUtMw-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="3mwNcthjt3u4vVBbUtMw-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Find: \(\vec{\rho}=V^{-1}\vec{t}\)" vertex="1">
+          <mxGeometry height="40" width="120" x="440" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="3mwNcthjt3u4vVBbUtMw-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Construct: \(\xi\)" vertex="1">
+          <mxGeometry height="40" width="120" x="640" y="200" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

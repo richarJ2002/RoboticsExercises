@@ -19,6 +19,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{graphicx} 
+\usepackage{listings}
 
 \numberwithin{equation}{section}
 
@@ -533,6 +534,8 @@ The logarithmic map can be defined using the following:
 
 \Section{SE(3): Translation}
 
+\Subsection{SE(3) group}
+
 Now we can add translation:
 
 \begin{equation}
@@ -607,5 +610,219 @@ Then the inverse is:
 
 Notice that the translation is not simply $-{}^B\vec{t}_A$. It must first be
 rotated.
+
+\Subsection{$\mathcal{SE}\text{(3)}$ Lie Algebra}
+
+Just as SO(3) has its Lie algebra, $\mathcal{SO}(3)$, SE(3) has:
+
+\begin{equation}
+    \mathcal{SE}(3)
+\end{equation}
+
+An element of algebra can be represented by a 6-vector:
+
+\begin{equation}
+    \xi = \begin{bmatrix}
+        \vec{\rho} \\
+        \vec{\phi}
+    \end{bmatrix}
+\end{equation}
+
+where $\vec{\rho}$ is translation and $\vec{\phi}$ is rotation:
+
+\begin{equation}
+    \vec{\rho} = \begin{bmatrix}
+        \rho_x \\
+        \rho_y \\
+        \rho_z \\
+    \end{bmatrix}
+\end{equation}
+
+\begin{equation}
+    \vec{\phi} = \begin{bmatrix}
+        \phi_x \\
+        \phi_y \\
+        \phi_z \\
+    \end{bmatrix}
+\end{equation}
+
+We can then:
+
+\begin{equation}
+    \xi\text{\textasciicircum} = \begin{bmatrix}
+        \phi\text{\textasciicircum} & \vec{\rho} \\
+        0                           & 0
+    \end{bmatrix}
+\end{equation}
+
+which takes:
+\begin{equation}
+    \mathbb{R}^6 \rightarrow \mathcal{SO}(3)
+\end{equation}
+
+\Subsection{SE(3) Exponential Map}
+
+The exponential map is defined as:
+
+\begin{equation}
+    T = \exp({\xi\text{\textasciicircum}})
+\end{equation}
+
+The result is:
+
+\begin{equation}
+    \exp(\xi\text{\textasciicircum}) = \begin{bmatrix}
+        \exp({}^B\vec{\phi}^{\text{    \textasciicircum}}_{A}) & V{}^B\vec{\rho}_A \\
+        0                                                      & 1
+    \end{bmatrix}
+\end{equation}
+
+where:
+
+\begin{equation}
+    R = \exp(\phi\text{\textasciicircum})
+\end{equation}
+
+\begin{equation}
+    V = \mathbb{I} + \frac{1 - \cos(\theta)}{\theta^2}\phi\text{\textasciicircum} + \frac{\theta - \sin(\theta)}{\theta^3}\left(\phi\text{\textasciicircum}\right)^2
+\end{equation}
+
+This is slightly more subtle than SO(3), because transaltion and rotation are
+coupled in the exponential map.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/png/exponential-map-diagram.png}
+    \caption{Figure showing the process to find the transform matrix through the exponential map.}
+    \label{fig:exponential-map}
+\end{figure}
+
+\Subsection{SE(3) Logarithmic Map}
+
+Going backwards:
+
+\begin{equation}
+    {}^BT_A = \begin{bmatrix}
+        {}^BR_A & {}^B\vec{t}_A \\
+        0       & 1
+    \end{bmatrix}
+\end{equation}
+
+We first calculate:
+
+\begin{equation}
+    {}^B\vec{\phi}_A = \log(R)
+\end{equation}
+
+Then:
+
+\begin{equation}
+    {}^B\vec{\vec{\rho}}_A = V^{-1} {}^B\vec{t}_A
+\end{equation}
+
+giving:
+
+\begin{equation}
+    \xi = \begin{bmatrix}
+        \vec{\rho} \\
+        \vec{\phi}
+    \end{bmatrix}
+\end{equation}
+
+therefore:
+
+\begin{equation}
+    \log({}^BT_A) = {}^B\xi_A^{\text{  \textasciicircum}}
+\end{equation}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/png/logarithmic-map-diagram.png}
+    \caption{Figure showing the process to find the twist vector through the logarithmic map.}
+    \label{fig:logarithmic-map}
+\end{figure}
+
+\Section{The Big Picture}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/png/lie-group-algebra.png}
+    \caption{Figure showing the processes for lie group algebra.}
+    \label{fig:lie-group-algebra}
+\end{figure}
+
+\Subsection{Why robotics use this?}
+
+The key advantage is that SE(3) is a constrained space, while its Lie Algebra is
+essentially an unconstrained vector space. \(R \in SO(3)\) cannot be
+\(R + \Delta R\), but we can represent a small update as:
+
+\begin{equation}
+    \delta \vec{\phi} \in \mathbb{R}^3
+\end{equation}
+
+and update:
+
+\begin{equation}
+    R_{new} = \exp(\delta \phi^{\text{\textasciicircum}})R
+\end{equation}
+
+The \(\exp()\) gaurantees that the result remains in SO(3). Similarily:
+
+\begin{equation}
+    T_{new} = \exp(\delta \xi^\text{\textasciicircum})T
+\end{equation}
+
+\Subsection{C++ Eigen Library}
+
+Eigen is widely used in robotics, SLAM, computer vision, and estimation for
+linear algebra.
+\\
+\begin{lstlisting}[language=C++]
+Eigen::Matrix3d          R;
+Eigen::Matrix4d          T;
+Eigen::Vector3d          phi;
+Eigen::Vector<double, 6> xi;
+\end{lstlisting}
+
+Eigen itself is not JSF compliant. However, you can use it in JSF source code as
+a third party library. In section 4.5 of JSF standard covers libraries. AV rule
+16 "Only DO-178B level A certifiable or SEAL 1 C/C++ libraries shall be used with
+safety critical code". Hence you can use it, but with care.
+
+\section{Active Vs Passive Transformation}
+
+Active: Rotate the physical object / vector
+Passive: Rotate the frame and keep the vector constant
+
+The mathematics is the same but the interpretation is different.
+
+\subsection{Active vs Passive in Lie Groups}
+
+\textbf{Active:}
+
+\begin{equation}
+    R_{new} = \exp(\vec{\phi}^{\text{   \textasciicircum}})R
+\end{equation}
+
+\textbf{Passive:}
+
+\begin{equation}
+    R_{new} = R\exp(-\vec{\phi}^{\text{   \textasciicircum}})
+\end{equation}
+
+Passive transformation is the inverse of an active transform.
+
+Usually in robotics we describe the 'pose' of a robot using the passive
+ranformation from body coordinates to world coordinates.
+
+\begin{equation}
+    {}^{w}\vec{p} = {}^{w}T_{b} {}^b\vec{p}
+\end{equation}
+
+So, if you have points in the robots body frame you can transform them into the
+world frame. As you can observe things from the robots POV, this saves you
+having to inverse when converting things to a world frame.
 
 \end{document}
